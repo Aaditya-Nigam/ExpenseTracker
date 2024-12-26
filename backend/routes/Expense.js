@@ -35,8 +35,22 @@ router.get("/",verification,async (req,res)=>{
 
 
 router.get("/:id",verification,async (req,res)=>{
-    const {id}=req.params
-    res.send(`get for the id: ${id}`)
+    try{
+        const {id}=req.params;
+        const expense=await Expense.findById(id);
+        if(expense==null){
+            res.status(404).json({error: "No expense found!"});
+            return ;
+        }
+        if(expense.userId != req.user.id){
+            res.status(401).json({error: "User unauthenticated!"});
+            return ;
+        }
+        res.status(202).send(expense);
+    }catch(err){
+        console.log(err);
+        res.status(404).json({error: "No expense found"});
+    }
 })
 
 
@@ -69,12 +83,60 @@ router.post("/",verification,async (req,res)=>{
 
 
 router.patch("/:id",verification,async (req,res)=>{
-    res.send(`update for the id: ${id}`)
+    try{
+        if(!req.body || !req.body.title || !req.body.amount || !req.body.category || !req.body.transactionType){
+            res.status(404).json({error: "Fields are missing!"});
+            return ;
+        }
+        const {id}=req.params;
+        const expense=await Expense.findById(id);
+        if(expense==null){
+            res.status(404).json({error: "Expense not found!"});
+            return ;
+        }
+        if(expense.userId != req.user.id){
+            res.status(402).json({error: "User unauthenticated!"});
+            return ;
+        }
+        const newExpense={
+            title: req.body.title,
+            amount: req.body.amount,
+            category: req.body.category,
+            transactionType: req.body.transactionType
+        }
+        const updatedExpense=await Expense.findByIdAndUpdate(id,newExpense);
+        if(updatedExpense==null){
+            res.status(402).json({error: "User unauthenticated!"});
+            return ;
+        }
+        res.status(202).send(updatedExpense);
+    }catch(err){
+        res.status(402).json({error: "User unauthenticated!"});
+    }
 })
 
 
 router.delete("/:id",verification,async (req,res)=>{
-    res.send(`delete for the id: ${id}`)
+    try{
+        const {id}=req.params
+        const expense=await Expense.findById(id);
+        if(expense==null){
+            res.status(404).json({error: "No expense found!"});
+            return ;
+        }
+        if(expense.userId != req.user.id){
+            res.status(402).json({error: "User unauthenticated!"});
+            return ;
+        }
+        const deletedExpense=await Expense.findByIdAndDelete(id);
+        if(deletedExpense==null){
+            res.status(404).json({error: "Expense not found!"});
+            return ;
+        }
+        res.status(202).send(deletedExpense);
+    }catch(err){
+        res.status(404).json({error: "User unauthenticated!"});
+    }
 })
 
 
