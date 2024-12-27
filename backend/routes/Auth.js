@@ -54,7 +54,7 @@ router.post("/login",async (req,res)=>{
         res.status(200).cookie("token",token,{
             httpOnly: true,
             secure: process.env.NODE_ENV==='production'
-        }).send("user logged in!")
+        }).send(user)
     }catch(err){
         res.status(404).json({error: err})
         console.log(err)
