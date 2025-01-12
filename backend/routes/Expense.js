@@ -5,7 +5,7 @@ const Expense=require("../models/Expense")
 
 const verification=(req,res,next)=>{
     if(!req.cookies?.token){
-        res.status(402).json({error: "User unauthenticated!"});
+        res.status(402).json({error: "User unauthenticated!!!"});
         return ;
     }
     jwt.verify(req.cookies.token,process.env.JWT,(err,user)=>{
@@ -28,7 +28,7 @@ router.get("/",verification,async (req,res)=>{
         const allExpenses=await Expense.find({userId: req.user.id});
         res.status(202).send(allExpenses);
     }catch(err){
-        res.status(404).json({error: "User unauthenticated!"});
+        res.status(404).json({error: "User unauthenticated!!"});
         console.log(err);
     }
 })

@@ -3,6 +3,26 @@ const router=express.Router();
 const bcrypt=require("bcrypt")
 const jwt=require("jsonwebtoken")
 const User=require("../models/Auth")
+const dotenv=require("dotenv")
+dotenv.config()
+
+router.get("/isLoggedin",async (req,res)=>{
+    try{
+        if(!req.cookies || !req.cookies.token){
+            res.status(404).json({error: "token not present"});
+            return ;
+        }
+        const user=jwt.verify(req.cookies.token,process.env.JWT)
+        const findUser=await User.findById(user.id)
+        if(findUser==null){
+            res.status(404).json({error: "token not present"});
+            return ;
+        }
+        res.status(202).json({error: "User found"});
+    }catch(err){
+        res.status(404).send(err.message);
+    }
+})
 
 router.post("/register",async (req,res)=>{
     try{

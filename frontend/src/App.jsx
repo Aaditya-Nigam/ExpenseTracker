@@ -5,6 +5,7 @@ import { Register } from "./pages/Register";
 import { Login } from "./pages/Login";
 
 import "./App.css"
+import { Expense } from "./pages/Expense";
 
 const App=()=>{
 
@@ -24,6 +25,10 @@ const App=()=>{
       {
         path: "/",
         element: <Home/>
+      },
+      {
+        path: "/expense",
+        element: <Expense/>
       }
     ]
   }])
