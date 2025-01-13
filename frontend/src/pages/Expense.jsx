@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
+import { RxCross2 } from "react-icons/rx";
 
 export const Expense=()=>{
 
@@ -8,6 +9,7 @@ export const Expense=()=>{
     const [updatedData,setUpdatedData]=useState(null);
     const [filter,setFilter]=useState("All");
     const [fromTo,setFromTo]=useState({from: "", to: ""});
+    const [showDate,setShowDate]=useState(null)
     const navigate=useNavigate();
 
     const isLoggedin=async ()=>{
@@ -115,13 +117,21 @@ export const Expense=()=>{
 
     const handleFormSubmit=(e)=>{
         e.preventDefault();
-        console.log(fromTo)
+        const lst=data.filter((ele)=>{
+            return (ele.createdAt.split('T')[0] >= fromTo.from && ele.createdAt.split('T')[0] <= fromTo.to);
+        })
+        setUpdatedData(lst);
+        setShowDate(fromTo);
+        setFromTo({from:"" , to:""})
+    }
 
-
+    const handleCancel=()=>{
+        setShowDate(null);
+        setUpdatedData(data);
     }
 
     return (
-        <main className="grid grid-cols-[1fr_9fr] h-[630px]">
+        <main className="grid grid-cols-[2fr_13fr] h-[630px]">
             <div className="left bg-rose-30 h-full shadow-lg px-4 py-4">
                 <div>
                     <div className="flex gap-4 items-center text-lg pb-4">
@@ -129,28 +139,28 @@ export const Expense=()=>{
                         <h3>Filters</h3>
                     </div>
                     <ul className="flex flex-col gap-2">
-                        <li onClick={()=> onFilterChange("All")} className={`${filter=="All"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("All")} className={`${filter=="All"? 'text-sky-500':""} cursor-pointer`}>
                             All
                         </li>
-                        <li onClick={()=> onFilterChange("Food")} className={`${filter=="Food"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Food")} className={`${filter=="Food"? 'text-sky-500':""} cursor-pointer`}>
                             Food
                         </li>
-                        <li onClick={()=> onFilterChange("Rent")} className={`${filter=="Rent"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Rent")} className={`${filter=="Rent"? 'text-sky-500':""} cursor-pointer`}>
                             Rent
                         </li>
-                        <li onClick={()=> onFilterChange("Travel")} className={`${filter=="Travel"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Travel")} className={`${filter=="Travel"? 'text-sky-500':""} cursor-pointer`}>
                             Travel
                         </li>
-                        <li onClick={()=> onFilterChange("Cloth")} className={`${filter=="Cloth"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Cloth")} className={`${filter=="Cloth"? 'text-sky-500':""} cursor-pointer`}>
                             Cloth
                         </li>
-                        <li onClick={()=> onFilterChange("Salary")} className={`${filter=="Salary"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Salary")} className={`${filter=="Salary"? 'text-sky-500':""} cursor-pointer`}>
                             Salary
                         </li>
-                        <li onClick={()=> onFilterChange("Credit")} className={`${filter=="Credit"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Credit")} className={`${filter=="Credit"? 'text-sky-500':""} cursor-pointer`}>
                             Credit
                         </li>
-                        <li onClick={()=> onFilterChange("Debit")} className={`${filter=="Debit"? 'text-sky-500':""}`}>
+                        <li onClick={()=> onFilterChange("Debit")} className={`${filter=="Debit"? 'text-sky-500':""} cursor-pointer`}>
                             Debit
                         </li>
                     </ul>
@@ -158,21 +168,29 @@ export const Expense=()=>{
             </div>
             <div className="right h-full p-4">
                 <h1 className="text-center text-3xl pb-4">Expenses</h1>
-                <form className="flex gap-4 px-4 py-4 w-4/5 mx-auto" onSubmit={handleFormSubmit}>
-                    <p className="text-xl">Date: </p>
-                    <div className="flex flex-cl gap-8">
-                        <div>
-                            <label htmlFor="from">From: </label>
-                            <input type="date" name="from" id="from" className="bg-sky-100 px-2 rounded-lg" value={fromTo?fromTo.from:""} onChange={handleOnChange}/>
+                <form className="px-4  w-4/5 mx-auto" onSubmit={handleFormSubmit}>
+                    <div className="flex gap-4 items-center">
+                        <p className="text-xl">Date: </p>
+                        <div className="flex flex-cl gap-8">
+                            <div>
+                                <label htmlFor="from">From: </label>
+                                <input type="date" name="from" id="from" className="bg-sky-100 px-2 rounded-lg" value={fromTo?fromTo.from:""} onChange={handleOnChange}required/>
+                            </div>
+                            <div>
+                                <label htmlFor="to">To: </label>
+                                <input type="date" name="to" id="to" className="bg-sky-100 px-2 rounded-lg" value={fromTo?fromTo.to:""} onChange={handleOnChange} required/>
+                            </div>
+                            <input type="submit" value="Submit" className="bg-sky-400 px-4 rounded-xl text-white hover:bg-sky-500 cursor-pointer"/>
                         </div>
-                        <div>
-                            <label htmlFor="to">To: </label>
-                            <input type="date" name="to" id="to" className="bg-sky-100 px-2 rounded-lg" value={fromTo?fromTo.to:""} onChange={handleOnChange}/>
-                        </div>
-                        <input type="submit" value="Submit" className="bg-sky-400 px-4 rounded-xl text-white hover:bg-sky-500 "/>
                     </div>
+                    {
+                        showDate?<div className="flex items-center gap-2 bg-sky-200 w-fit px-2 py-1 rounded text-sm mt-2">
+                            <p>{showDate.from}&nbsp; - &nbsp;{showDate.to}</p>
+                            <RxCross2 className="cursor-pointer" onClick={handleCancel}/>
+                        </div>:""
+                    }
                 </form>
-                <div className="border px-4 py-2 w-4/5 mx-auto min-h-60 h-5/6 rounded-lg overflow-auto">
+                <div className="border px-4 py-2 mt-4 w-4/5 mx-auto min-h-60 h-5/6 rounded-lg overflow-auto">
                     <p className="text-center">All expenses..</p>
                     
                     {
