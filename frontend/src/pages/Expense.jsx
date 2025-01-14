@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { RxCross2 } from "react-icons/rx";
+import { FaRegEdit } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 export const Expense=()=>{
 
@@ -130,6 +132,26 @@ export const Expense=()=>{
         setUpdatedData(data);
     }
 
+    const handleDeleteExpense=async (id)=>{
+        const response=await fetch(`http://localhost:5000/api/expense/${id}`,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            credentials: "include"
+        })
+        const result=await response.json();
+        if(!response.ok){
+            console.log(result.error)
+        }else{
+            console.log(result);
+            const lst=updatedData.filter((dat)=>{
+                return dat._id!=id;
+            })
+            setUpdatedData(lst);
+        }
+    }
+
     return (
         <main className="grid grid-cols-[2fr_13fr] h-[630px]">
             <div className="left bg-rose-30 h-full shadow-lg px-4 py-4">
@@ -201,13 +223,14 @@ export const Expense=()=>{
                                         <div className="flex gap-4 items-center">
                                             <h3 className="text-md font-bold">{exp.title}</h3>
                                             <p className="text-sm">{exp.createdAt.split('T')[0]}</p>
-                                            <div className="buttons">
-                                                
+                                            <div className="buttons flex gap-1 text-md items-center">
+                                                <FaRegEdit className="cursor-pointer"/>
+                                                <MdDeleteForever className="cursor-pointer" onClick={()=>handleDeleteExpense(exp._id)}/>
                                             </div>
                                         </div>
                                         <p className=" text-sm"><span className="font-semibold">Category:</span> {exp.category}</p>
                                     </div>
-                                    <div className={`text-md ${exp.transactionType=="Debit"?'text-lime-600':'text-rose-500'}`}>
+                                    <div className={`text-md ${exp.transactionType=="Debit"?'text-rose-500':'text-lime-600'}`}>
                                         Rs. {exp.amount}
                                     </div>
                                 </div>

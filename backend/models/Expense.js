@@ -21,6 +21,10 @@ const expenseSchema=mongoose.Schema({
     transactionType:{
         type: String,
         required:[true, "Credit or debit must be clearly mensioned"]
+    },
+    date: {
+        type: String,
+        required: [true, "Date must be provided"]
     }
 },{timestamps: true})
 

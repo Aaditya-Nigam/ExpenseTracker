@@ -27,7 +27,8 @@ export const Home=()=>{
         "title": "",
         "amount": 0,
         "category": "Other",
-        "transactionType": "Debit"
+        "transactionType": "Debit",
+        "date": ""
     })
 
     const handleOnChange=(e)=>{
@@ -57,18 +58,14 @@ export const Home=()=>{
             "title": "",
             "amount": 0,
             "category": "Other",
-            "transactionType": "Debit"
+            "transactionType": "Debit",
+            "date": ""
         })
     }
 
     return (
         <main>
             <div className="home_container borr-2 w-3/4 mx-auto px-4 py-8">
-                {/* <div className="bg-slate-100 w-3/5 mx-auto p-4 rounded-lg flex flex-col gap-2">
-                    <h3 className="font-bold">Total Income: &nbsp;<span className="font-normal">Rs.13244</span></h3> 
-                    <h3 className="font-bold">Total Spend: &nbsp;<span className="font-normal">Rs.13244</span></h3> 
-                    <h3 className="font-bold">Max Spend at: &nbsp;<span className="font-normal">Rs.13244</span></h3> 
-                </div> */}
                 <form className="w-3/5 mx-auto p-4 flex flex-col justify-center gap-4 bg-slate-100 rounded-lg mt-4" onSubmit={handleFormSubmit}>
                     <div>
                         <label htmlFor="title">Title: </label>
@@ -77,6 +74,10 @@ export const Home=()=>{
                     <div>
                         <label htmlFor="amount">Amount: </label>
                         <input type="number" name="amount" id="amount" placeholder="3201" className="border-2 w-3/4 px-2 py-1 rounded-lg border-slate-100 outline-none" required value={expense.amount} onChange={handleOnChange}/>
+                    </div>
+                    <div>
+                        <label htmlFor="date">Date: </label>
+                        <input type="date" name="date" id="date" className="border-2 w-3/4 px-2 py-1 rounded-lg border-slate-100 outline-none" required value={expense.date} onChange={handleOnChange}/>
                     </div>
                     <div>
                         <label htmlFor="category">Category: </label>

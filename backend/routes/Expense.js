@@ -56,7 +56,7 @@ router.get("/:id",verification,async (req,res)=>{
 
 router.post("/",verification,async (req,res)=>{
     try{
-        if(!req.body || !req.body.title || !req.body.amount || !req.body.transactionType){
+        if(!req.body || !req.body.title || !req.body.amount || !req.body.transactionType || !req.body.date){
             res.status(404).json({error: "Fields are missing!"});
             return ;
         }
@@ -64,7 +64,8 @@ router.post("/",verification,async (req,res)=>{
             userId: req.user.id,
             title: req.body.title,
             amount: req.body.amount,
-            transactionType: req.body.transactionType
+            transactionType: req.body.transactionType,
+            date: req.body.date
         }
         if(req.body.category){
             expense={...expense,category: req.body.category}
@@ -77,6 +78,7 @@ router.post("/",verification,async (req,res)=>{
         res.status(201).send(addedExpense);
     }catch(err){
         res.status(402).json({error: "Fields are missing"});
+        console.log(err);
         // console.log(err);
     }
 })
