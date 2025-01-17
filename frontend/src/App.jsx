@@ -7,6 +7,7 @@ import { Login } from "./pages/Login";
 import "./App.css"
 import { Expense } from "./pages/Expense";
 import { Analysis } from "./pages/Analysis";
+import { Contact } from "./pages/Contact";
 
 const App=()=>{
 
@@ -34,6 +35,10 @@ const App=()=>{
       {
         path:"/analysis",
         element: <Analysis/>
+      },
+      {
+        path: "/contact",
+        element: <Contact/>
       }
     ]
   }])

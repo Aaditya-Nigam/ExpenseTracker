@@ -222,7 +222,7 @@ export const Expense=()=>{
                                     <div>
                                         <div className="flex gap-4 items-center">
                                             <h3 className="text-md font-bold">{exp.title}</h3>
-                                            <p className="text-sm">{exp.createdAt.split('T')[0]}</p>
+                                            <p className="text-sm">{exp.date}</p>
                                             <div className="buttons flex gap-1 text-md items-center">
                                                 <FaRegEdit className="cursor-pointer"/>
                                                 <MdDeleteForever className="cursor-pointer" onClick={()=>handleDeleteExpense(exp._id)}/>
