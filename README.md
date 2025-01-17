@@ -8,7 +8,6 @@ A simple and efficient expense tracking application built using the MERN (MongoD
 - View transaction history with pagination and filtering.
 - Dashboard with charts and analytics for income and expense tracking.
 - Responsive design for seamless usage on all devices.
-- Dark mode for better user experience.
 
 
 **Tech Stack**
